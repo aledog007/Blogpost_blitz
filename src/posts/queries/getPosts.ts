@@ -5,8 +5,8 @@ import db, { Prisma } from "db"
 interface GetPostsInput
   extends Pick<Prisma.PostFindManyArgs, "where" | "orderBy" | "skip" | "take"> {}
 
+// Öffentlich: Beiträge dürfen ohne Login gelesen werden (kein resolver.authorize())
 export default resolver.pipe(
-  resolver.authorize(),
   async ({ where, orderBy, skip = 0, take = 100 }: GetPostsInput) => {
     // TODO: in multi-tenant app, you must add validation to ensure correct tenant
     const {

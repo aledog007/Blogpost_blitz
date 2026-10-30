@@ -32,7 +32,7 @@ const ResetPasswordPage: BlitzPage = () => {
           initialValues={{
             password: "",
             passwordConfirmation: "",
-            token,
+            token: token ?? "",
           }}
           onSubmit={async (values) => {
             try {

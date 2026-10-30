@@ -2,11 +2,19 @@ import { ErrorFallbackProps, ErrorComponent, ErrorBoundary, AppProps } from "@bl
 import { AuthenticationError, AuthorizationError } from "blitz"
 import React from "react"
 import { withBlitz } from "src/blitz-client"
+import Layout from "src/core/layouts/Layout"
+import { LoginForm } from "src/auth/components/LoginForm"
 import 'src/styles/globals.css'
 
-function RootErrorFallback({ error }: ErrorFallbackProps) {
+function RootErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
   if (error instanceof AuthenticationError) {
-    return <div>Error: You are not authenticated</div>
+    // Geschützte Seite (z. B. /posts/new) ohne Login: direkt das Login-Formular zeigen
+    return (
+      <Layout title="Login">
+        <p>Bitte melde dich an, um Beiträge zu schreiben.</p>
+        <LoginForm onSuccess={resetErrorBoundary} />
+      </Layout>
+    )
   } else if (error instanceof AuthorizationError) {
     return (
       <ErrorComponent

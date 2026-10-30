@@ -13,13 +13,13 @@ const NewPostPage = () => {
   const [createPostMutation] = useMutation(createPost)
 
   return (
-    <Layout title={"Create New Post"}>
-      <h1>Create New Post</h1>
-      <Suspense fallback={<div>Loading...</div>}>
+    <Layout title="Neuer Beitrag">
+      <h1>Neuer Beitrag</h1>
+      <Suspense fallback={<div>Lädt …</div>}>
         <PostForm
-          submitText="Create Post"
+          submitText="Beitrag veröffentlichen"
           schema={CreatePostSchema}
-          // initialValues={{}}
+          initialValues={{ title: "", content: "" }}
           onSubmit={async (values) => {
             try {
               const post = await createPostMutation(values)
@@ -34,7 +34,7 @@ const NewPostPage = () => {
         />
       </Suspense>
       <p>
-        <Link href={Routes.PostsPage()}>Posts</Link>
+        <Link href={Routes.PostsPage()}>← Alle Beiträge</Link>
       </p>
     </Layout>
   )

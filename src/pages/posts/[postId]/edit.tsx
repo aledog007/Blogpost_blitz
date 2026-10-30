@@ -25,25 +25,27 @@ export const EditPost = () => {
   )
   const [updatePostMutation] = useMutation(updatePost)
 
+  // Suspense garantiert Daten, Blitz 3 typisiert useQuery aber als "T | undefined"
+  if (!post) return null
+
   return (
     <>
       <Head>
-        <title>Edit Post {post.id}</title>
+        <title>{`Bearbeiten: ${post.title} | Blitz Blog`}</title>
       </Head>
 
       <div>
-        <h1>Edit Post {post.id}</h1>
-        <pre>{JSON.stringify(post, null, 2)}</pre>
-        <Suspense fallback={<div>Loading...</div>}>
+        <h1>Beitrag bearbeiten</h1>
+        <Suspense fallback={<div>Lädt …</div>}>
           <PostForm
-            submitText="Update Post"
+            submitText="Änderungen speichern"
             schema={UpdatePostSchema}
             initialValues={post}
             onSubmit={async (values) => {
               try {
                 const updated = await updatePostMutation({
-                  id: post.id,
                   ...values,
+                  id: post.id,
                 })
                 await setQueryData(updated)
                 await router.push(Routes.ShowPostPage({ postId: updated.id }))
@@ -64,12 +66,12 @@ export const EditPost = () => {
 const EditPostPage = () => {
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Lädt …</div>}>
         <EditPost />
       </Suspense>
 
       <p>
-        <Link href={Routes.PostsPage()}>Posts</Link>
+        <Link href={Routes.PostsPage()}>← Alle Beiträge</Link>
       </p>
     </div>
   )

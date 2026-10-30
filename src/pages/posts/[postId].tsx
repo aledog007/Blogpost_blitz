@@ -9,38 +9,48 @@ import { useParam } from "@blitzjs/next"
 import Layout from "src/core/layouts/Layout"
 import getPost from "src/posts/queries/getPost"
 import deletePost from "src/posts/mutations/deletePost"
+import { useCurrentUser } from "src/users/hooks/useCurrentUser"
+import { formatDate } from "src/posts/utils"
 
 export const Post = () => {
   const router = useRouter()
   const postId = useParam("postId", "number")
+  const currentUser = useCurrentUser()
   const [deletePostMutation] = useMutation(deletePost)
   const [post] = useQuery(getPost, { id: postId })
+
+  // Suspense garantiert Daten, Blitz 3 typisiert useQuery aber als "T | undefined"
+  if (!post) return null
 
   return (
     <>
       <Head>
-        <title>Post {post.id}</title>
+        <title>{`${post.title} | Blitz Blog`}</title>
       </Head>
 
-      <div>
-        <h1>Post {post.id}</h1>
-        <pre>{JSON.stringify(post, null, 2)}</pre>
+      <article>
+        <h1>{post.title}</h1>
+        <p className="muted">{formatDate(post.createdAt)}</p>
+        <div className="post-content">{post.content}</div>
+      </article>
 
-        <Link href={Routes.EditPostPage({ postId: post.id })}>Edit</Link>
-
-        <button
-          type="button"
-          onClick={async () => {
-            if (window.confirm("This will be deleted")) {
-              await deletePostMutation({ id: post.id })
-              await router.push(Routes.PostsPage())
-            }
-          }}
-          style={{ marginLeft: "0.5rem" }}
-        >
-          Delete
-        </button>
-      </div>
+      {/* Bearbeiten/Löschen nur für eingeloggte Personen – die Mutations prüfen das zusätzlich serverseitig */}
+      {currentUser && (
+        <div className="actions">
+          <Link href={Routes.EditPostPage({ postId: post.id })}>Bearbeiten</Link>
+          <button
+            type="button"
+            onClick={async () => {
+              if (window.confirm("Diesen Beitrag wirklich löschen?")) {
+                await deletePostMutation({ id: post.id })
+                await router.push(Routes.PostsPage())
+              }
+            }}
+          >
+            Löschen
+          </button>
+        </div>
+      )}
     </>
   )
 }
@@ -49,17 +59,16 @@ const ShowPostPage = () => {
   return (
     <div>
       <p>
-        <Link href={Routes.PostsPage()}>Posts</Link>
+        <Link href={Routes.PostsPage()}>← Alle Beiträge</Link>
       </p>
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Lädt …</div>}>
         <Post />
       </Suspense>
     </div>
   )
 }
 
-ShowPostPage.authenticate = true
 ShowPostPage.getLayout = (page) => <Layout>{page}</Layout>
 
 export default ShowPostPage

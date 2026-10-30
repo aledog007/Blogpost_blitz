@@ -8,8 +8,10 @@ class MyDocument extends Document {
 	// }
 	render() {
 		return (
-			<Html lang="en">
-				<Head />
+			<Html lang="de">
+				<Head>
+					<meta name="description" content="Minimaler Blog mit Blitz.js – Framework-Vergleich" />
+				</Head>
 				<body>
 					<Main />
 					<NextScript />
