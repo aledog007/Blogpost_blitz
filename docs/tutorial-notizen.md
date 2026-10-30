@@ -86,6 +86,6 @@ npx blitz dev
 
 - **Person 3 (Deployment):** Env-Variablen `DATABASE_URL` (Postgres) und `SESSION_SECRET_KEY` setzen (z. B.
   `openssl rand -hex 16`). Bereits erledigt: Umstellung von SQLite auf PostgreSQL (SQLite ist
-  serverless nicht persistent), neue Postgres-Migration und `vercel-build`-Script mit `prisma migrate deploy`.
+  serverless nicht persistent), neue Postgres-Migration und `build`-Script mit `prisma migrate deploy`.
 - **Person 4 (Matrizen):** Die Punkte 1–3, 8 und 9 gehören in die Spalten Documentation / Issue & Bug
   Fixes / Migration der Ecosystem-Matrix, Punkt 10 in die Performance-Matrix.

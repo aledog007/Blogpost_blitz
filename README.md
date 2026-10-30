@@ -25,7 +25,7 @@ Danach <http://localhost:3000> öffnen, unter „Registrieren“ ein Konto anleg
 1. Repo in Vercel importieren (Framework wird als Next.js erkannt, keine Build-Einstellungen nötig).
 2. Postgres-Datenbank anlegen (Vercel → Storage → Neon, oder Supabase).
 3. Environment Variables setzen (siehe unten).
-4. Deploy. Vercel führt automatisch das Script `vercel-build` aus:
+4. Deploy. Vercel führt automatisch `npm run build` aus:
    `prisma generate && prisma migrate deploy && blitz build` – die Tabellen werden dabei angelegt.
 
 ## Umgebungsvariablen
