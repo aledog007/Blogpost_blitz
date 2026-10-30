@@ -4,13 +4,13 @@ Stand: 30.10.2026 · Blitz 3.0.2 · Next.js 15.0.1 · React 19 · Prisma 6.1 · 
 
 ## Was gebaut wurde
 
-| Anforderung | Umsetzung | Datei(en) |
-|---|---|---|
-| Liste aller Beiträge | Neueste zuerst, Datum + Auszug, Pagination (10 pro Seite), auch auf der Startseite | `src/pages/posts/index.tsx`, `src/pages/index.tsx` |
-| Detailansicht | Titel, Datum, Inhalt (Zeilenumbrüche bleiben erhalten) | `src/pages/posts/[postId].tsx` |
-| Formular zum Anlegen | Titel + mehrzeiliger Inhalt, Zod-Validierung mit deutschen Fehlermeldungen | `src/pages/posts/new.tsx`, `src/posts/components/PostForm.tsx`, `src/posts/schemas.ts` |
-| Zugriffsregeln | Lesen öffentlich, Schreiben/Bearbeiten/Löschen nur eingeloggt | `src/posts/queries/*`, `src/posts/mutations/*` |
-| Login-Hinweis | Geschützte Seite ohne Login zeigt direkt das Login-Formular | `src/pages/_app.tsx` |
+| Anforderung          | Umsetzung                                                                          | Datei(en)                                                                              |
+| -------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Liste aller Beiträge | Neueste zuerst, Datum + Auszug, Pagination (10 pro Seite), auch auf der Startseite | `src/pages/posts/index.tsx`, `src/pages/index.tsx`                                     |
+| Detailansicht        | Titel, Datum, Inhalt (Zeilenumbrüche bleiben erhalten)                             | `src/pages/posts/[postId].tsx`                                                         |
+| Formular zum Anlegen | Titel + mehrzeiliger Inhalt, Zod-Validierung mit deutschen Fehlermeldungen         | `src/pages/posts/new.tsx`, `src/posts/components/PostForm.tsx`, `src/posts/schemas.ts` |
+| Zugriffsregeln       | Lesen öffentlich, Schreiben/Bearbeiten/Löschen nur eingeloggt                      | `src/posts/queries/*`, `src/posts/mutations/*`                                         |
+| Login-Hinweis        | Geschützte Seite ohne Login zeigt direkt das Login-Formular                        | `src/pages/_app.tsx`                                                                   |
 
 Zero-API in der Praxis: Die Seiten importieren `getPosts`, `getPost` und `createPost` direkt als Funktion
 (`useQuery(getPost, { id })`, `useMutation(createPost)`). Blitz macht daraus beim Build automatisch
@@ -75,17 +75,17 @@ npx blitz dev
 
 ## Messwerte lokal
 
-| Messpunkt | Wert |
-|---|---|
-| `blitz new` inkl. `npm install` | ca. 2–3 min |
-| `blitz build` (lokal, Windows) | 2 min 11 s |
-| First Load JS pro Seite | ca. 150 kB (davon 149 kB geteilt) |
-| Typcheck / Build nach Fixes | erfolgreich |
+| Messpunkt                       | Wert                              |
+| ------------------------------- | --------------------------------- |
+| `blitz new` inkl. `npm install` | ca. 2–3 min                       |
+| `blitz build` (lokal, Windows)  | 2 min 11 s                        |
+| First Load JS pro Seite         | ca. 150 kB (davon 149 kB geteilt) |
+| Typcheck / Build nach Fixes     | erfolgreich                       |
 
 ## Hinweise für das Team
 
-- **Person 3 (Deployment):** Env-Variablen `DATABASE_URL` und `SESSION_SECRET_KEY` setzen (z. B.
-  `openssl rand -hex 16`). SQLite funktioniert serverless nicht, deshalb in `db/schema.prisma`
-  `provider = "postgresql"` setzen und Migrationen neu erzeugen.
+- **Person 3 (Deployment):** Env-Variablen `DATABASE_URL` (Postgres) und `SESSION_SECRET_KEY` setzen (z. B.
+  `openssl rand -hex 16`). Bereits erledigt: Umstellung von SQLite auf PostgreSQL (SQLite ist
+  serverless nicht persistent), neue Postgres-Migration und `build`-Script mit `prisma migrate deploy`.
 - **Person 4 (Matrizen):** Die Punkte 1–3, 8 und 9 gehören in die Spalten Documentation / Issue & Bug
   Fixes / Migration der Ecosystem-Matrix, Punkt 10 in die Performance-Matrix.
