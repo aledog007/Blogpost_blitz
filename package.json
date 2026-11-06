@@ -30,7 +30,7 @@
     "@prisma/client": "6.1.0",
     "blitz": "3.0.2",
     "formik": "2.4.9",
-    "next": "15.0.1",
+    "next": "15.0.8",
     "prisma": "6.1.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
